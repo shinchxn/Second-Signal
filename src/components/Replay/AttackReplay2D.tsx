@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   Smartphone,
@@ -40,7 +40,7 @@ interface Chapter {
   serverState: 'idle' | 'routing' | 'harvesting' | 'siphoning';
 }
 
-const CHAPTERS: Chapter[] = [
+const getChapters = (firstName: string): Chapter[] => [
   {
     id: 1,
     timeRange: '0:00 - 0:04',
@@ -48,7 +48,7 @@ const CHAPTERS: Chapter[] = [
     shortLabel: '1. The Urgent SMS',
     simpleSubtitle: 'Fake urgency creates panic to make you tap without thinking',
     whatHappenedTitle: 'Fake SMS Received',
-    whatHappenedDesc: 'A spoofed SMS creates a false 7:00 PM deadline. Arjun taps the suspicious verification link.',
+    whatHappenedDesc: `A spoofed SMS creates a false 7:00 PM deadline. ${firstName} taps the suspicious verification link.`,
     dataPacketLabel: 'Outgoing Tap: Open Link',
     serverState: 'routing',
   },
@@ -70,7 +70,7 @@ const CHAPTERS: Chapter[] = [
     shortLabel: '3. PIN Copied Secretly',
     simpleSubtitle: 'Whatever you type on the fake page is captured instantly by the thief',
     whatHappenedTitle: 'Secret PIN Exfiltrated',
-    whatHappenedDesc: 'Arjun types his secret banking PIN. The fake page sends it directly into the thief’s database in plain text.',
+    whatHappenedDesc: `${firstName} types their secret banking PIN. The fake page sends it directly into the thief’s database in plain text.`,
     dataPacketLabel: 'Stolen PIN (4092) Exfiltrating',
     serverState: 'harvesting',
   },
@@ -81,7 +81,7 @@ const CHAPTERS: Chapter[] = [
     shortLabel: '4. Funds Siphoned',
     simpleSubtitle: 'While a fake loading circle plays, a robot script empties the bank account',
     whatHappenedTitle: '₹24,500 Siphoned via API',
-    whatHappenedDesc: 'While Arjun stares at a fake spinner, a script logs into his real bank account and transfers ₹24,500 in 1.4 seconds.',
+    whatHappenedDesc: `While ${firstName} stares at a fake spinner, a script logs into their real bank account and transfers ₹24,500 in 1.4 seconds.`,
     dataPacketLabel: 'Siphoning ₹24,500 to Mule Account',
     serverState: 'siphoning',
   },
@@ -90,7 +90,9 @@ const CHAPTERS: Chapter[] = [
 const TOTAL_DURATION = 16; // 16 seconds total replay
 
 export const AttackReplay2D: React.FC = () => {
-  const { setStage, addEvent } = useSessionStore();
+  const { character, setStage, addEvent } = useSessionStore();
+  const firstName = character.name.split(' ')[0];
+  const CHAPTERS: Chapter[] = useMemo(() => getChapters(firstName), [firstName]);
 
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
@@ -214,7 +216,7 @@ export const AttackReplay2D: React.FC = () => {
           </div>
           <span className="hidden sm:inline text-neutral-600">|</span>
           <span className="hidden sm:inline text-[11px] text-neutral-300 font-medium">
-            Watch how clicking the link secretly diverted funds without Arjun noticing
+            Watch how clicking the link secretly diverted funds without {firstName} noticing
           </span>
         </div>
 
@@ -298,7 +300,7 @@ export const AttackReplay2D: React.FC = () => {
             {/* Stage Label above phone */}
             <div className="mb-1 flex items-center gap-1.5 text-[11px] font-bold text-teal-400">
               <Smartphone className="h-3.5 w-3.5" />
-              <span>Arjun's Phone Screen</span>
+              <span>{firstName}'s Phone Screen</span>
             </div>
 
             {/* Phone Chassis */}
@@ -380,7 +382,7 @@ export const AttackReplay2D: React.FC = () => {
                       <div className="space-y-0.5">
                         <span className="text-[9px] text-neutral-400">Account:</span>
                         <div className="rounded bg-neutral-950 px-1.5 py-0.5 font-mono text-[9px] text-neutral-300 border border-neutral-800">
-                          Arjun Mehta (••4092)
+                          {character.name} (••4092)
                         </div>
                       </div>
                     </div>

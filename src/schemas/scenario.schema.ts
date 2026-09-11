@@ -40,7 +40,7 @@ export const ScenarioSchema = z.object({
     })
   ),
 
-  contextNarration: z.string().default('Arjun is reviewing communications.'),
+  contextNarration: z.string().default('Reviewing daily communications.'),
   safeAlternatives: z.array(z.string()).default([
     'Verify through the official app or website directly',
     'Check official support channels without clicking links',

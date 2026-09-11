@@ -24,6 +24,7 @@ import { soundEffects } from '../../utils/soundEffects';
 
 export const SimulatedPhone: React.FC = () => {
   const {
+    character,
     scenario1,
     digitalState,
     activePhoneApp,
@@ -67,7 +68,7 @@ export const SimulatedPhone: React.FC = () => {
       actor: 'user',
       type: 'USER_OPENED_MESSAGE',
       label: 'Opened Urgent SMS',
-      description: 'Arjun opened the SMS alert.',
+      description: `${character.name.split(' ')[0]} opened the SMS alert.`,
     });
   };
 
@@ -126,7 +127,7 @@ export const SimulatedPhone: React.FC = () => {
       <div className="relative z-20 flex w-full max-w-xl items-center justify-between rounded-xl border border-neutral-800 bg-neutral-900/80 px-3 py-1 backdrop-blur-md text-xs shrink-0">
         <div className="flex items-center gap-2">
           <Smartphone className="h-3.5 w-3.5 text-teal-400" />
-          <span className="font-semibold text-neutral-200">Arjun's Phone</span>
+          <span className="font-semibold text-neutral-200">{character.name.split(' ')[0]}'s Phone</span>
           <span className="text-neutral-600">|</span>
           <span className="font-mono text-[11px] text-amber-400">Urgency Trigger Active</span>
         </div>
@@ -356,7 +357,7 @@ export const SimulatedPhone: React.FC = () => {
                         <input
                           type="text"
                           readOnly
-                          value="Arjun Mehta (••4092)"
+                          value={`${character.name} (••4092)`}
                           className="w-full rounded bg-neutral-950 border border-neutral-800 p-1.5 text-neutral-300 font-mono text-[10px]"
                         />
                       </div>
@@ -431,7 +432,7 @@ export const SimulatedPhone: React.FC = () => {
                     <div className="w-8" />
                   </div>
                   <div className="p-3 text-xs text-neutral-400 space-y-2">
-                    <div>Device: Arjun's Phone</div>
+                    <div>Device: {character.name.split(' ')[0]}'s Phone</div>
                     <div>OS: SimOS 14.2</div>
                     <div>Sessions: 1 Active</div>
                   </div>

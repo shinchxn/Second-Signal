@@ -108,9 +108,13 @@ export type AvatarEmotion =
   | 'confident';
 
 export interface CharacterProfile {
+  id?: 'librarian' | 'barista';
   name: string;
   age: number;
   role: string;
+  workplace?: string;
+  workTerminal?: string;
+  workEmail?: string;
   context: string;
   emotion: AvatarEmotion;
 }

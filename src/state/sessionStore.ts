@@ -12,6 +12,31 @@ import { fallbackScenario1, fallbackScenario2 } from '../scenarios/fallbackScena
 import { defaultVoiceProvider } from '../voice/voiceProvider';
 import { soundEffects } from '../utils/soundEffects';
 
+export const NORMAL_PERSONAS: Record<'librarian' | 'barista', CharacterProfile> = {
+  librarian: {
+    id: 'librarian',
+    name: 'Clara Morales',
+    age: 31,
+    role: 'Community Librarian',
+    workplace: 'Oakridge Public Library',
+    workTerminal: 'Oakridge Library Staff Terminal',
+    workEmail: 'clara.m@oakridgelibrary.org',
+    context: 'Unwinding on the sofa after shelving books, helping patrons, and hosting the afternoon reading hour.',
+    emotion: 'neutral',
+  },
+  barista: {
+    id: 'barista',
+    name: 'Leo Ramirez',
+    age: 27,
+    role: 'Coffee Shop Barista & Shift Lead',
+    workplace: 'Roast & Bean Café',
+    workTerminal: 'Roast & Bean Front Terminal',
+    workEmail: 'leo.r@roastandbean.net',
+    context: 'Taking a breather after a hectic morning espresso rush and restocking beans at the corner coffee shop.',
+    emotion: 'neutral',
+  },
+};
+
 interface SessionState {
   // Navigation & Flow
   stage: AppStage;
@@ -19,6 +44,7 @@ interface SessionState {
 
   // Character
   character: CharacterProfile;
+  selectPersona: (personaKey: 'librarian' | 'barista') => void;
   setCharacterEmotion: (emotion: CharacterProfile['emotion']) => void;
 
   // Scenarios
@@ -123,12 +149,35 @@ export const useSessionStore = create<SessionState>((set, get) => ({
   stage: 'LANDING',
   setStage: (stage) => set({ stage }),
 
-  character: {
-    name: 'Arjun Mehta',
-    age: 22,
-    role: 'Computer Science Student & Engineering Intern',
-    context: 'Returning from a long day at college and project work.',
-    emotion: 'neutral',
+  character: NORMAL_PERSONAS.librarian,
+  selectPersona: (personaKey: 'librarian' | 'barista') => {
+    const p = NORMAL_PERSONAS[personaKey];
+    set((state) => {
+      const firstName = p.name.split(' ')[0];
+      const updatedScenario2: Scenario =
+        personaKey === 'barista'
+          ? {
+              ...state.scenario2,
+              title: 'Café Staff Portal & Direct Deposit Deadline',
+              victimMessage: {
+                ...state.scenario2.victimMessage,
+                sender: 'Roast & Bean Management',
+                senderHandle: 'admin@roastandbean-portal.net',
+                subject: "Action required before today's 6:00 PM staff security deadline",
+                body: `Attention ${firstName},\n\nAction is required before today's 6:00 PM staff security deadline. All café shift employees must re-authenticate their employee portal credentials.\n\nAccounts that fail to complete authorization before 6:00 PM will face automated suspension of shift scheduling, tip payout disbursements, and inventory ordering access.`,
+                fakeUrl: 'roastandbean-portal.net/shift-login',
+              },
+              contextNarration: `Wednesday — 11:18 AM. ${firstName} is at the Roast & Bean front terminal reviewing morning store communications.`,
+            }
+          : {
+              ...fallbackScenario2,
+            };
+
+      return {
+        character: p,
+        scenario2: updatedScenario2,
+      };
+    });
   },
   setCharacterEmotion: (emotion) =>
     set((state) => ({ character: { ...state.character, emotion } })),
@@ -315,13 +364,8 @@ export const useSessionStore = create<SessionState>((set, get) => ({
       laptopInspectingHeaders: false,
       laptopBrowserUrl: '',
       selectedReplayNodeId: 'step-2-urgency',
-      character: {
-        name: 'Arjun Mehta',
-        age: 22,
-        role: 'Computer Science Student & Engineering Intern',
-        context: 'Returning from a long day at college and project work.',
-        emotion: 'neutral',
-      },
+      character: NORMAL_PERSONAS.librarian,
+      scenario2: fallbackScenario2,
     });
   },
 }));

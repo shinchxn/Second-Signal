@@ -4,14 +4,14 @@ import { ArrowRight, Clock, Laptop, AlertTriangle, CheckCircle2 } from 'lucide-r
 import { useSessionStore } from '../../state/sessionStore';
 
 export const PracticeTransition: React.FC = () => {
-  const { setStage, addEvent } = useSessionStore();
+  const { character, setStage, addEvent } = useSessionStore();
 
   const handleEnterLaptop = () => {
     addEvent({
       actor: 'system',
       type: 'SCENARIO_2_INITIALIZED',
-      label: 'Corporate Workstation Session Started',
-      description: 'Arjun logged into his workstation at 11:18 AM.',
+      label: 'Staff Workstation Session Started',
+      description: `${character.name.split(' ')[0]} logged into the ${character.workTerminal || 'staff computer'} at 11:18 AM.`,
     });
     setStage('SCENARIO_2_LAPTOP');
   };
@@ -47,7 +47,7 @@ export const PracticeTransition: React.FC = () => {
                 New Scenario, Same Psychological Weapon
               </h2>
               <p className="text-xs text-neutral-400">
-                ApexCorp Engineering Laptop
+                {character.workTerminal || `${character.workplace} Staff Computer`}
               </p>
             </div>
           </div>
@@ -62,7 +62,7 @@ export const PracticeTransition: React.FC = () => {
 
             <div className="rounded-xl border border-indigo-500/30 bg-indigo-950/20 p-3">
               <div className="text-[10px] font-mono text-indigo-400 uppercase">Today's Test</div>
-              <div className="text-neutral-200 font-medium mt-0.5">Corporate Email</div>
+              <div className="text-neutral-200 font-medium mt-0.5">Workplace Email</div>
               <div className="text-[11px] text-teal-400 font-mono mt-0.5">Apply 3-sec reflex</div>
             </div>
           </div>
@@ -76,7 +76,7 @@ export const PracticeTransition: React.FC = () => {
               onClick={handleEnterLaptop}
               className="inline-flex items-center gap-2 rounded-xl bg-teal-500 px-4 py-2 text-xs font-bold text-neutral-950 transition hover:bg-teal-400 active:scale-95 shadow-md shadow-teal-500/10"
             >
-              <span>Launch Laptop</span>
+              <span>Open Staff Computer</span>
               <ArrowRight className="h-3.5 w-3.5" />
             </button>
           </div>

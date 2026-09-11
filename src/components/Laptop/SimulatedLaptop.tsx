@@ -18,6 +18,8 @@ import { soundEffects } from '../../utils/soundEffects';
 
 export const SimulatedLaptop: React.FC = () => {
   const {
+    character,
+    scenario2,
     setEncounter2Outcome,
     recordWeaknessOutcome,
     setStage,
@@ -48,7 +50,7 @@ export const SimulatedLaptop: React.FC = () => {
       actor: 'user',
       type: 'USER_REPORTED_PHISHING',
       label: 'Phishing Reported',
-      description: 'Arjun recognized the artificial 6:00 PM deadline and reported the email.',
+      description: `${character.name.split(' ')[0]} recognized the artificial 6:00 PM deadline and reported the email.`,
     });
     setStage('SCENARIO_2_RECOGNITION');
   };
@@ -71,7 +73,7 @@ export const SimulatedLaptop: React.FC = () => {
       actor: 'user',
       type: 'USER_SUBMITTED_CREDENTIALS',
       label: 'Submitted Credentials',
-      description: 'Authorized corporate SSO under deadline pressure.',
+      description: 'Authorized employee credentials under deadline pressure.',
     });
     setStage('SCENARIO_2_RECOGNITION');
   };
@@ -84,9 +86,11 @@ export const SimulatedLaptop: React.FC = () => {
       <div className="relative z-20 flex w-full max-w-2xl items-center justify-between rounded-xl border border-neutral-800 bg-neutral-900/80 px-3 py-1 backdrop-blur-md text-xs shrink-0">
         <div className="flex items-center gap-2">
           <Laptop className="h-3.5 w-3.5 text-indigo-400" />
-          <span className="font-semibold text-neutral-200">ApexCorp Workstation</span>
+          <span className="font-semibold text-neutral-200">
+            {character.workTerminal || `${character.workplace} Terminal`}
+          </span>
           <span className="text-neutral-600">|</span>
-          <span className="font-mono text-[11px] text-amber-400">Urgency Test 02</span>
+          <span className="font-mono text-[11px] text-amber-400">Workplace Urgency Test</span>
         </div>
 
         {/* Zoom controls */}
@@ -152,11 +156,13 @@ export const SimulatedLaptop: React.FC = () => {
                   }`}
                 >
                   <MessageSquare className="h-3 w-3 text-teal-400" />
-                  <span>IT Slack</span>
+                  <span>Staff Helpdesk</span>
                 </button>
               </div>
 
-              <span className="text-[10px] font-mono text-neutral-500">arjun.m@apexcorp.internal</span>
+              <span className="text-[10px] font-mono text-neutral-500">
+                {character.workEmail || 'staff@oakridgelibrary.org'}
+              </span>
             </div>
 
             {/* TAB CONTENT: EMAIL */}
@@ -167,10 +173,10 @@ export const SimulatedLaptop: React.FC = () => {
                   <div className="flex items-center justify-between border-b border-neutral-800 pb-2">
                     <div>
                       <div className="text-xs font-bold text-neutral-100">
-                        [URGENT] Mandatory SSO Certificate Renewal
+                        {scenario2.victimMessage.subject}
                       </div>
                       <div className="text-[10px] text-neutral-400 mt-0.5">
-                        From: <span className="font-mono text-amber-300">security-portal@apexcorp-auth-internal.net</span>
+                        From: <span className="font-mono text-amber-300">{scenario2.victimMessage.senderHandle}</span>
                       </div>
                     </div>
                     <button
@@ -191,9 +197,10 @@ export const SimulatedLaptop: React.FC = () => {
                         exit={{ opacity: 0, height: 0 }}
                         className="mt-2 rounded-lg border border-neutral-800 bg-neutral-900/90 p-2 font-mono text-[10px] text-neutral-300 space-y-0.5"
                       >
-                        <div>SPF: <span className="text-red-400 font-bold">FAIL (Unauthorized)</span></div>
-                        <div>DKIM: <span className="text-red-400 font-bold">INVALID</span></div>
-                        <div>Real Apex Domain: <span className="text-emerald-400 font-bold">apexcorp.com</span> (Lookalike domain registered 18 hrs ago)</div>
+                        <div>SPF: <span className="text-red-400 font-bold">FAIL (Unauthorized Mail Server)</span></div>
+                        <div>DKIM: <span className="text-red-400 font-bold">INVALID SIGNATURE</span></div>
+                        <div>Sender Host: <span className="text-red-400 font-bold">{scenario2.victimMessage.senderHandle.split('@')[1]}</span> (Lookalike domain registered recently)</div>
+                        <div>Official Domain: <span className="text-emerald-400 font-bold">{character.workEmail ? character.workEmail.split('@')[1] : 'oakridgelibrary.org'}</span></div>
                       </motion.div>
                     )}
                   </AnimatePresence>
@@ -201,16 +208,16 @@ export const SimulatedLaptop: React.FC = () => {
                   {/* Body */}
                   <div className="mt-3 rounded-lg border border-neutral-800 bg-neutral-900/40 p-3 text-xs space-y-2">
                     <div className="rounded border border-red-500/30 bg-red-950/30 p-2 text-red-200 text-[11px] font-medium">
-                      ⚠️ DEADLINE: Complete renewal before 6:00 PM today or VPN/Git access will be suspended.
+                      ⚠️ DEADLINE: Action required before 6:00 PM today to prevent automated suspension of staff scheduling and direct deposit payroll.
                     </div>
                     <p className="text-[11px] text-neutral-300">
-                      All engineering staff must re-authenticate single sign-on certificates immediately:
+                      All {character.workplace || 'staff'} employees must re-authenticate their employee portal credentials:
                     </p>
                     <button
                       onClick={handleClickSSO}
                       className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-indigo-500"
                     >
-                      <span>Renew SSO Credentials</span>
+                      <span>{scenario2.victimMessage.ctaLabel || 'Renew Staff Credentials'}</span>
                       <ExternalLink className="h-3 w-3" />
                     </button>
                   </div>
@@ -226,7 +233,7 @@ export const SimulatedLaptop: React.FC = () => {
                       onClick={handleVerifySlack}
                       className="rounded bg-neutral-800 px-2.5 py-1 text-xs text-teal-300 hover:bg-neutral-700"
                     >
-                      Ask IT on Slack
+                      Ask Staff Helpdesk
                     </button>
                     <button
                       onClick={handleReportPhishing}
@@ -244,7 +251,7 @@ export const SimulatedLaptop: React.FC = () => {
               <div className="flex flex-1 min-h-0 bg-neutral-950 p-4 flex-col justify-between text-xs">
                 <div className="space-y-3">
                   <div className="border-b border-neutral-800 pb-2 flex justify-between items-center">
-                    <span className="font-bold text-neutral-100">#it-support</span>
+                    <span className="font-bold text-neutral-100">#staff-helpdesk</span>
                     <button
                       onClick={() => setActiveTab('email')}
                       className="text-neutral-400 hover:text-neutral-200"
@@ -253,8 +260,12 @@ export const SimulatedLaptop: React.FC = () => {
                     </button>
                   </div>
                   <div className="rounded-xl border border-neutral-800 bg-neutral-900 p-3 space-y-2">
-                    <div className="text-teal-400 font-bold">Arjun: "Is the 6:00 PM SSO renewal email real?"</div>
-                    <div className="text-indigo-300 font-bold">IT Helpdesk: "Phishing alert! We never set same-day email deadlines. Good catch!"</div>
+                    <div className="text-teal-400 font-bold">
+                      {character.name.split(' ')[0]}: "Did anyone else get this urgent 6:00 PM portal renewal email?"
+                    </div>
+                    <div className="text-indigo-300 font-bold">
+                      Staff Helpdesk: "Phishing alert! The organization never sets same-day account suspension deadlines via email. Good catch!"
+                    </div>
                   </div>
                 </div>
 
@@ -273,14 +284,16 @@ export const SimulatedLaptop: React.FC = () => {
             {activeTab === 'browser' && (
               <div className="flex flex-1 min-h-0 bg-neutral-950 p-4 flex-col items-center justify-center text-xs">
                 <div className="w-full max-w-sm rounded-xl border border-neutral-800 bg-neutral-900 p-4 space-y-3 text-center">
-                  <div className="text-red-400 font-mono text-[10px]">🔒 apexcorp-auth-internal.net/login</div>
-                  <div className="font-bold text-neutral-100">Simulated Enterprise SSO</div>
+                  <div className="text-red-400 font-mono text-[10px]">
+                    🔒 {scenario2.victimMessage.fakeUrl}
+                  </div>
+                  <div className="font-bold text-neutral-100">Simulated Staff Portal Authentication</div>
                   <div className="text-[11px] text-neutral-400">Deadline: 6:00 PM</div>
                   <button
                     onClick={handleSubmitSSO}
                     className="w-full rounded-lg bg-indigo-600 py-2 text-xs font-bold text-white hover:bg-indigo-500"
                   >
-                    Authorize Certificate Renewal
+                    Authorize Credential Renewal
                   </button>
                   <button
                     onClick={() => setActiveTab('email')}
