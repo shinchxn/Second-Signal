@@ -1,0 +1,6 @@
+{
+  "name": "Second Signal",
+  "description": "Second Signal — Experience the cyber attack. Understand the human vulnerability. Recognize the signal next time.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
