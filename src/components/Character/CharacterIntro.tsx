@@ -19,7 +19,7 @@ export const CharacterIntro: React.FC = () => {
   const isLibrarian = character.id === 'librarian' || character.role.includes('Librarian');
 
   return (
-    <div className="relative flex h-[calc(100vh-3.5rem)] max-h-[calc(100vh-3.5rem)] flex-col items-center justify-center overflow-hidden px-4 sm:px-6">
+    <div className="relative flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center overflow-y-auto px-3 sm:px-6 py-4 sm:py-6 overflow-x-hidden select-none">
       <div className="pointer-events-none absolute inset-0 bg-cyber-grid opacity-20" />
       <div className="pointer-events-none absolute top-1/3 left-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-teal-500/10 blur-3xl" />
 
@@ -29,7 +29,7 @@ export const CharacterIntro: React.FC = () => {
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4 }}
-          className="rounded-2xl border border-neutral-800 bg-neutral-900/90 p-5 shadow-2xl backdrop-blur-md"
+          className="rounded-2xl border border-neutral-800 bg-neutral-900/90 p-4 sm:p-5 shadow-2xl backdrop-blur-md"
         >
           {/* Top meta */}
           <div className="flex items-center justify-between border-b border-neutral-800 pb-3 text-xs">
@@ -46,11 +46,11 @@ export const CharacterIntro: React.FC = () => {
               <span>Select Everyday Profile:</span>
               <span className="text-neutral-500 text-[10px]">Normal, non-tech professional</span>
             </div>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               <button
                 type="button"
                 onClick={() => selectPersona('librarian')}
-                className={`flex items-center gap-2.5 rounded-xl border p-2.5 text-left transition ${
+                className={`flex min-h-[44px] items-center gap-2.5 rounded-xl border p-2.5 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400 ${
                   isLibrarian
                     ? 'border-teal-500/60 bg-teal-950/40 text-neutral-100 shadow-sm'
                     : 'border-neutral-800 bg-neutral-950/40 text-neutral-400 hover:border-neutral-700 hover:text-neutral-200'
@@ -73,7 +73,7 @@ export const CharacterIntro: React.FC = () => {
               <button
                 type="button"
                 onClick={() => selectPersona('barista')}
-                className={`flex items-center gap-2.5 rounded-xl border p-2.5 text-left transition ${
+                className={`flex min-h-[44px] items-center gap-2.5 rounded-xl border p-2.5 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 ${
                   !isLibrarian
                     ? 'border-amber-500/60 bg-amber-950/40 text-neutral-100 shadow-sm'
                     : 'border-neutral-800 bg-neutral-950/40 text-neutral-400 hover:border-neutral-700 hover:text-neutral-200'
@@ -125,12 +125,12 @@ export const CharacterIntro: React.FC = () => {
 
             {/* Persona Details */}
             <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2">
-                <h2 className="text-base font-bold text-neutral-100">{character.name}</h2>
+              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                <h2 className="text-sm sm:text-base font-bold text-neutral-100">{character.name}</h2>
                 <span className="rounded bg-neutral-800 px-1.5 py-0.5 text-[10px] font-medium text-neutral-400">
                   {character.age} yrs
                 </span>
-                <span className="rounded bg-neutral-800 px-1.5 py-0.5 text-[10px] text-neutral-400">
+                <span className="rounded bg-neutral-800 px-1.5 py-0.5 text-[10px] text-neutral-400 truncate max-w-[120px]">
                   {character.workplace}
                 </span>
               </div>
@@ -150,7 +150,7 @@ export const CharacterIntro: React.FC = () => {
           <div className="mt-4 flex items-center justify-end">
             <button
               onClick={handleStartPhone}
-              className="inline-flex items-center gap-2 rounded-xl bg-teal-500 px-4 py-2 text-xs font-bold text-neutral-950 transition hover:bg-teal-400 active:scale-95 shadow-md shadow-teal-500/10"
+              className="w-full sm:w-auto inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl bg-teal-500 px-5 py-2.5 text-xs font-bold text-neutral-950 transition hover:bg-teal-400 active:scale-95 shadow-md shadow-teal-500/10"
             >
               <span>Unlock Phone as {character.name.split(' ')[0]}</span>
               <ArrowRight className="h-3.5 w-3.5" />

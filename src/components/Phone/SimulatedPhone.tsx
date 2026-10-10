@@ -120,33 +120,34 @@ export const SimulatedPhone: React.FC = () => {
   };
 
   return (
-    <div className="relative flex h-[calc(100vh-3.5rem)] max-h-[calc(100vh-3.5rem)] flex-col items-center justify-between px-3 py-1 overflow-hidden select-none">
+    <div className="relative flex min-h-[calc(100vh-4rem)] flex-col items-center justify-start sm:justify-between px-2 sm:px-3 py-1 sm:py-2 overflow-y-auto overflow-x-hidden select-none">
       <div className="pointer-events-none absolute inset-0 bg-cyber-grid opacity-15" />
 
       {/* TOP COMPACT STATUS & ZOOM BAR */}
-      <div className="relative z-20 flex w-full max-w-xl items-center justify-between rounded-xl border border-neutral-800 bg-neutral-900/80 px-3 py-1 backdrop-blur-md text-xs shrink-0">
-        <div className="flex items-center gap-2">
-          <Smartphone className="h-3.5 w-3.5 text-teal-400" />
-          <span className="font-semibold text-neutral-200">{character.name.split(' ')[0]}'s Phone</span>
-          <span className="text-neutral-600">|</span>
-          <span className="font-mono text-[11px] text-amber-400">Urgency Trigger Active</span>
+      <div className="relative z-20 flex w-full max-w-xl items-center justify-between rounded-xl border border-neutral-800 bg-neutral-900/90 px-2.5 sm:px-3 py-1.5 backdrop-blur-md text-xs shrink-0 mb-1">
+        <div className="flex items-center gap-1.5 sm:gap-2 truncate mr-2">
+          <Smartphone className="h-3.5 w-3.5 text-teal-400 shrink-0" />
+          <span className="font-semibold text-neutral-200 truncate">{character.name.split(' ')[0]}'s Phone</span>
+          <span className="text-neutral-600 hidden xs:inline">|</span>
+          <span className="font-mono text-[10px] sm:text-[11px] text-amber-400 hidden xs:inline truncate">Urgency Trigger Active</span>
         </div>
 
         {/* Zoom Out / Zoom In Controls */}
-        <div className="flex items-center gap-1.5 font-mono text-[11px]">
-          <span className="text-neutral-500">Zoom:</span>
+        <div className="flex items-center gap-1 font-mono text-[11px] shrink-0">
           <button
-            onClick={() => setZoomScale(Math.max(0.75, zoomScale - 0.05))}
-            className="p-1 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-300 transition"
+            onClick={() => setZoomScale(Math.max(0.65, zoomScale - 0.05))}
+            className="p-1 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-300 transition focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-teal-400"
             title="Zoom Out"
+            aria-label="Zoom Out"
           >
             <ZoomOut className="h-3 w-3" />
           </button>
-          <span className="w-8 text-center text-teal-300 font-bold">{Math.round(zoomScale * 100)}%</span>
+          <span className="w-7 text-center text-teal-300 font-bold text-[10px]">{Math.round(zoomScale * 100)}%</span>
           <button
             onClick={() => setZoomScale(Math.min(1.05, zoomScale + 0.05))}
-            className="p-1 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-300 transition"
+            className="p-1 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-300 transition focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-teal-400"
             title="Zoom In"
+            aria-label="Zoom In"
           >
             <ZoomIn className="h-3 w-3" />
           </button>
@@ -154,15 +155,15 @@ export const SimulatedPhone: React.FC = () => {
       </div>
 
       {/* CENTERED ZOOMED-OUT PHONE CONTAINER */}
-      <div className="relative z-10 flex flex-1 items-center justify-center min-h-0 w-full">
+      <div className="relative z-10 flex flex-1 items-center justify-center min-h-0 w-full py-2">
         <div
           style={{ transform: `scale(${zoomScale})`, transformOrigin: 'center center' }}
-          className={`relative w-[300px] shrink-0 rounded-[38px] border-4 border-neutral-700 bg-neutral-950 p-2 shadow-2xl shadow-black/80 ring-1 ring-neutral-600/40 transition-transform duration-150 ${
+          className={`relative w-[min(300px,calc(100vw-1.5rem))] shrink-0 rounded-[34px] sm:rounded-[38px] border-4 border-neutral-700 bg-neutral-950 p-1.5 sm:p-2 shadow-2xl shadow-black/80 ring-1 ring-neutral-600/40 transition-transform duration-150 ${
             isHapticShaking ? 'animate-haptic-shake' : ''
           }`}
         >
           {/* Screen Chassis */}
-          <div className="relative flex h-[490px] flex-col overflow-hidden rounded-[30px] bg-neutral-950 text-neutral-100 shadow-inner">
+          <div className="relative flex h-[480px] sm:h-[490px] flex-col overflow-hidden rounded-[26px] sm:rounded-[30px] bg-neutral-950 text-neutral-100 shadow-inner">
             {/* Status Bar */}
             <div className="relative z-30 flex h-7 items-center justify-between px-4 text-xs font-medium shrink-0 bg-neutral-950/80 backdrop-blur-sm">
               <span className="font-mono text-[11px]">8:42</span>

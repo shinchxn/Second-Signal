@@ -4,6 +4,7 @@ import {
   CharacterProfile,
   DigitalState,
   Scenario,
+  ScenarioId,
   SimulationEvent,
   WeaknessScore,
   WeaknessTag,
@@ -96,6 +97,12 @@ interface SessionState {
   // Attack Replay Active Node
   selectedReplayNodeId: string | null;
   setSelectedReplayNodeId: (id: string | null) => void;
+
+  // Multi-Scenario Lab Engine
+  activeScenarioId: ScenarioId;
+  setActiveScenarioId: (id: ScenarioId) => void;
+  scenarioProgress: Record<ScenarioId, { completed: boolean; outcome: 'missed' | 'recognized' | null }>;
+  recordScenarioCompletion: (id: ScenarioId, outcome: 'missed' | 'recognized') => void;
 
   // Audio / Voice / Sound Effects
   isVoiceMuted: boolean;
@@ -325,6 +332,27 @@ export const useSessionStore = create<SessionState>((set, get) => ({
 
   selectedReplayNodeId: 'step-2-urgency',
   setSelectedReplayNodeId: (id) => set({ selectedReplayNodeId: id }),
+
+  activeScenarioId: 'scenario-1-kyc',
+  setActiveScenarioId: (id) => set({ activeScenarioId: id }),
+  scenarioProgress: {
+    'scenario-1-kyc': { completed: false, outcome: null },
+    'scenario-2-sso': { completed: false, outcome: null },
+    'scenario-3-upi': { completed: false, outcome: null },
+    'scenario-4-parcel': { completed: false, outcome: null },
+    'scenario-5-marketplace': { completed: false, outcome: null },
+    'scenario-6-gig': { completed: false, outcome: null },
+    'scenario-7-remote': { completed: false, outcome: null },
+    'scenario-8-refund': { completed: false, outcome: null },
+  },
+  recordScenarioCompletion: (id, outcome) => {
+    set((state) => ({
+      scenarioProgress: {
+        ...state.scenarioProgress,
+        [id]: { completed: true, outcome },
+      },
+    }));
+  },
 
   isVoiceMuted: false,
   toggleVoiceMute: () => {

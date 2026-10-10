@@ -54,7 +54,7 @@ export const SimulatedConsequenceModal: React.FC = () => {
   };
 
   return (
-    <div className="relative flex h-[calc(100vh-3.5rem)] max-h-[calc(100vh-3.5rem)] flex-col items-center justify-center overflow-hidden px-4 py-2">
+    <div className="relative flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center overflow-y-auto px-3 sm:px-4 py-4 sm:py-6 overflow-x-hidden select-none">
       <div className="pointer-events-none absolute inset-0 bg-cyber-grid opacity-20" />
       <div className="pointer-events-none absolute top-1/2 left-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-red-500/10 blur-3xl" />
 
@@ -64,7 +64,7 @@ export const SimulatedConsequenceModal: React.FC = () => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.35 }}
-          className="w-full rounded-2xl border border-red-500/30 bg-neutral-900/95 p-5 shadow-2xl backdrop-blur-md"
+          className="w-full rounded-2xl border border-red-500/30 bg-neutral-900/95 p-4 sm:p-5 shadow-2xl backdrop-blur-md"
         >
           {/* Top Pill */}
           <div className="flex items-center justify-between border-b border-neutral-800 pb-3">
@@ -83,7 +83,7 @@ export const SimulatedConsequenceModal: React.FC = () => {
               }`}
             >
               <div className="text-[10px]">1. Session</div>
-              <div className="font-bold">Intercepted</div>
+              <div className="font-bold text-[11px] sm:text-xs">Intercepted</div>
             </div>
 
             <div
@@ -92,7 +92,7 @@ export const SimulatedConsequenceModal: React.FC = () => {
               }`}
             >
               <div className="text-[10px]">2. Transfer</div>
-              <div className="font-bold">Automated</div>
+              <div className="font-bold text-[11px] sm:text-xs">Automated</div>
             </div>
 
             <div
@@ -101,14 +101,14 @@ export const SimulatedConsequenceModal: React.FC = () => {
               }`}
             >
               <div className="text-[10px]">3. Balance</div>
-              <div className="font-bold">Drained (₹0)</div>
+              <div className="font-bold text-[11px] sm:text-xs">Drained (₹0)</div>
             </div>
           </div>
 
           {/* Balance Depletion Display */}
           <div className="mt-4 rounded-xl border border-neutral-800 bg-neutral-950 p-4 text-center">
             <div className="text-xs font-mono text-neutral-400">FlowPay Wallet Balance</div>
-            <div className="mt-1 text-3xl font-extrabold font-mono text-red-400 transition-all">
+            <div className="mt-1 text-2xl sm:text-3xl font-extrabold font-mono text-red-400 transition-all">
               ₹{balance.toLocaleString('en-IN')}.00
             </div>
             <div className="mt-1 text-[11px] font-mono text-neutral-500">
@@ -133,13 +133,13 @@ export const SimulatedConsequenceModal: React.FC = () => {
           </motion.div>
 
           {/* Primary Action Button */}
-          <div className="mt-5 flex items-center justify-between gap-3">
-            <div className="text-[11px] text-neutral-400">
+          <div className="mt-5 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-2 border-t border-neutral-800">
+            <div className="text-xs text-neutral-400 text-center sm:text-left">
               Understand why this happened in 3D Replay.
             </div>
             <button
               onClick={handleProceedToReplay}
-              className="inline-flex items-center gap-2 rounded-xl bg-teal-500 px-5 py-2.5 text-xs font-bold text-neutral-950 transition hover:bg-teal-400 active:scale-95 shadow-md shadow-teal-500/20 shrink-0"
+              className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl bg-teal-500 px-5 py-2.5 text-xs font-bold text-neutral-950 transition hover:bg-teal-400 active:scale-95 shadow-md shadow-teal-500/20 shrink-0"
             >
               <span>Replay Attack</span>
               <ArrowRight className="h-3.5 w-3.5" />

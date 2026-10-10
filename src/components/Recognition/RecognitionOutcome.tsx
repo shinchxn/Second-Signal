@@ -33,7 +33,7 @@ export const RecognitionOutcome: React.FC = () => {
   };
 
   return (
-    <div className="relative flex h-[calc(100vh-3.5rem)] max-h-[calc(100vh-3.5rem)] flex-col items-center justify-center overflow-hidden px-4 py-2">
+    <div className="relative flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center overflow-y-auto px-3 sm:px-6 py-4 sm:py-6 overflow-x-hidden select-none">
       <div className="pointer-events-none absolute inset-0 bg-cyber-grid opacity-20" />
       <div
         className={`pointer-events-none absolute top-1/2 left-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl ${
@@ -46,7 +46,7 @@ export const RecognitionOutcome: React.FC = () => {
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.3 }}
-          className="rounded-2xl border border-neutral-800 bg-neutral-900/90 p-5 shadow-2xl backdrop-blur-md space-y-4"
+          className="rounded-2xl border border-neutral-800 bg-neutral-900/90 p-4 sm:p-5 shadow-2xl backdrop-blur-md space-y-4"
         >
           {/* Status Badge */}
           <div className="flex items-center justify-between border-b border-neutral-800 pb-3">
@@ -75,7 +75,7 @@ export const RecognitionOutcome: React.FC = () => {
 
           {/* Heading */}
           <div>
-            <h2 className="text-xl font-bold text-neutral-100">
+            <h2 className="text-lg sm:text-xl font-bold text-neutral-100">
               {isRecognized ? 'You Caught The Urgency Cue' : 'The Urgency Trap Repeated'}
             </h2>
             <p className="mt-1 text-xs text-neutral-400 leading-snug">
@@ -86,7 +86,7 @@ export const RecognitionOutcome: React.FC = () => {
           </div>
 
           {/* Clean 2-Box Visual Contrast */}
-          <div className="grid grid-cols-2 gap-2 text-xs">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
             <div className="rounded-xl border border-amber-500/30 bg-neutral-950 p-3 space-y-1">
               <div className="text-[10px] font-mono text-amber-400 uppercase font-bold">Encounter 01</div>
               <div className="text-neutral-300 font-medium">Mobile SMS: Missed</div>
@@ -117,13 +117,13 @@ export const RecognitionOutcome: React.FC = () => {
           </div>
 
           {/* CTA Row */}
-          <div className="flex items-center justify-between pt-1">
-            <span className="text-[11px] text-neutral-500 font-mono">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-2 border-t border-neutral-800">
+            <span className="text-[11px] text-neutral-400 font-mono text-center sm:text-left">
               Completed the full experiential learning loop.
             </span>
             <button
               onClick={handleProceedToSummary}
-              className="inline-flex items-center gap-2 rounded-xl bg-teal-500 px-4 py-2 text-xs font-bold text-neutral-950 transition hover:bg-teal-400 active:scale-95 shadow-md shadow-teal-500/10"
+              className="w-full sm:w-auto inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl bg-teal-500 px-5 py-2.5 text-xs font-bold text-neutral-950 transition hover:bg-teal-400 active:scale-95 shadow-md shadow-teal-500/10 shrink-0"
             >
               <span>View Summary</span>
               <ArrowRight className="h-3.5 w-3.5" />

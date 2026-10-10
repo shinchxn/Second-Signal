@@ -28,7 +28,12 @@ export const SimulatedLaptop: React.FC = () => {
 
   const [headersOpen, setHeadersOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'email' | 'slack' | 'browser'>('email');
-  const [zoomScale, setZoomScale] = useState<number>(0.9);
+  const [zoomScale, setZoomScale] = useState<number>(() => {
+    if (typeof window !== 'undefined' && window.innerWidth < 640) {
+      return Math.min(0.65, Math.max(0.48, (window.innerWidth - 24) / 720));
+    }
+    return 0.9;
+  });
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -79,35 +84,36 @@ export const SimulatedLaptop: React.FC = () => {
   };
 
   return (
-    <div className="relative flex h-[calc(100vh-3.5rem)] max-h-[calc(100vh-3.5rem)] flex-col items-center justify-between px-3 py-1 overflow-hidden select-none">
+    <div className="relative flex min-h-[calc(100vh-4rem)] flex-col items-center justify-start sm:justify-between px-2 sm:px-3 py-1 sm:py-2 overflow-y-auto overflow-x-hidden select-none">
       <div className="pointer-events-none absolute inset-0 bg-cyber-grid opacity-15" />
 
       {/* TOP COMPACT BAR */}
-      <div className="relative z-20 flex w-full max-w-2xl items-center justify-between rounded-xl border border-neutral-800 bg-neutral-900/80 px-3 py-1 backdrop-blur-md text-xs shrink-0">
-        <div className="flex items-center gap-2">
-          <Laptop className="h-3.5 w-3.5 text-indigo-400" />
-          <span className="font-semibold text-neutral-200">
+      <div className="relative z-20 flex w-full max-w-2xl items-center justify-between rounded-xl border border-neutral-800 bg-neutral-900/90 px-2.5 sm:px-3 py-1.5 backdrop-blur-md text-xs shrink-0 mb-1">
+        <div className="flex items-center gap-1.5 sm:gap-2 truncate mr-2">
+          <Laptop className="h-3.5 w-3.5 text-indigo-400 shrink-0" />
+          <span className="font-semibold text-neutral-200 truncate">
             {character.workTerminal || `${character.workplace} Terminal`}
           </span>
-          <span className="text-neutral-600">|</span>
-          <span className="font-mono text-[11px] text-amber-400">Workplace Urgency Test</span>
+          <span className="text-neutral-600 hidden xs:inline">|</span>
+          <span className="font-mono text-[10px] sm:text-[11px] text-amber-400 hidden xs:inline truncate">Workplace Urgency Test</span>
         </div>
 
         {/* Zoom controls */}
-        <div className="flex items-center gap-1.5 font-mono text-[11px]">
-          <span className="text-neutral-500">Zoom:</span>
+        <div className="flex items-center gap-1 font-mono text-[11px] shrink-0">
           <button
-            onClick={() => setZoomScale(Math.max(0.75, zoomScale - 0.05))}
-            className="p-1 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-300 transition"
+            onClick={() => setZoomScale(Math.max(0.65, zoomScale - 0.05))}
+            className="p-1 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-300 transition focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-indigo-400"
             title="Zoom Out"
+            aria-label="Zoom Out"
           >
             <ZoomOut className="h-3 w-3" />
           </button>
-          <span className="w-8 text-center text-indigo-300 font-bold">{Math.round(zoomScale * 100)}%</span>
+          <span className="w-7 text-center text-indigo-300 font-bold text-[10px]">{Math.round(zoomScale * 100)}%</span>
           <button
             onClick={() => setZoomScale(Math.min(1.05, zoomScale + 0.05))}
-            className="p-1 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-300 transition"
+            className="p-1 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-300 transition focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-indigo-400"
             title="Zoom In"
+            aria-label="Zoom In"
           >
             <ZoomIn className="h-3 w-3" />
           </button>
@@ -115,10 +121,10 @@ export const SimulatedLaptop: React.FC = () => {
       </div>
 
       {/* WORKSTATION DISPLAY */}
-      <div className="relative z-10 flex flex-1 items-center justify-center min-h-0 w-full">
+      <div className="relative z-10 flex flex-1 items-center justify-center min-h-0 w-full py-2">
         <div
           style={{ transform: `scale(${zoomScale})`, transformOrigin: 'center center' }}
-          className="w-full max-w-3xl shrink-0 rounded-2xl border-4 border-neutral-700 bg-neutral-950 p-2 shadow-2xl ring-1 ring-neutral-600/40 transition-transform duration-150"
+          className="w-full max-w-3xl shrink-0 rounded-2xl border-4 border-neutral-700 bg-neutral-950 p-1.5 sm:p-2 shadow-2xl ring-1 ring-neutral-600/40 transition-transform duration-150"
         >
           <div className="flex h-[450px] flex-col overflow-hidden rounded-xl border border-neutral-800 bg-neutral-900 text-neutral-100 shadow-inner">
             {/* OS Menu Bar */}
@@ -224,20 +230,20 @@ export const SimulatedLaptop: React.FC = () => {
                 </div>
 
                 {/* Safe Actions Bottom Bar */}
-                <div className="rounded-xl border border-neutral-800 bg-neutral-900 p-2 flex items-center justify-between">
+                <div className="rounded-xl border border-neutral-800 bg-neutral-900 p-2 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2">
                   <span className="text-[11px] text-neutral-400">
                     Recognize the 6:00 PM pressure tactic?
                   </span>
-                  <div className="flex gap-2">
+                  <div className="flex flex-col xs:flex-row gap-2">
                     <button
                       onClick={handleVerifySlack}
-                      className="rounded bg-neutral-800 px-2.5 py-1 text-xs text-teal-300 hover:bg-neutral-700"
+                      className="rounded bg-neutral-800 px-2.5 py-1.5 text-xs text-teal-300 hover:bg-neutral-700 min-h-[36px] flex items-center justify-center"
                     >
                       Ask Staff Helpdesk
                     </button>
                     <button
                       onClick={handleReportPhishing}
-                      className="rounded bg-emerald-600 px-3 py-1 text-xs font-bold text-white hover:bg-emerald-500"
+                      className="rounded bg-emerald-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-emerald-500 min-h-[36px] flex items-center justify-center"
                     >
                       Report Phishing
                     </button>

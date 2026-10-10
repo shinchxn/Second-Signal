@@ -258,7 +258,7 @@ export const ThreeAttackReplay: React.FC = () => {
   return (
     <div className="relative flex min-h-[calc(100vh-3.5rem)] flex-col px-4 py-6 sm:px-6">
       {/* Top Header */}
-      <div className="mx-auto flex w-full max-w-6xl items-center justify-between border-b border-neutral-800 pb-4">
+      <div className="mx-auto flex w-full max-w-6xl flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 border-b border-neutral-800 pb-4">
         <div>
           <div className="flex items-center gap-2">
             <span className="flex h-2.5 w-2.5 rounded-full bg-teal-400 animate-pulse" />
@@ -274,7 +274,7 @@ export const ThreeAttackReplay: React.FC = () => {
         {/* Action button to Diagnosis */}
         <button
           onClick={() => setStage('SCENARIO_1_DIAGNOSIS')}
-          className="inline-flex items-center gap-2 rounded-xl bg-teal-500 px-5 py-2.5 text-xs font-semibold text-neutral-950 transition hover:bg-teal-400 active:scale-95 shadow-md shadow-teal-500/10"
+          className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl bg-teal-500 px-5 py-2.5 text-xs font-semibold text-neutral-950 transition hover:bg-teal-400 active:scale-95 shadow-md shadow-teal-500/10 shrink-0"
         >
           <span>Continue to Behavioral Diagnosis</span>
           <ArrowRight className="h-4 w-4" />
@@ -284,29 +284,31 @@ export const ThreeAttackReplay: React.FC = () => {
       {/* Main Dual-Perspective Canvas & Insight Grid */}
       <div className="mx-auto mt-4 grid w-full max-w-6xl flex-1 grid-cols-1 gap-4 lg:grid-cols-12">
         {/* 3D Timeline Viewport (7 Cols) */}
-        <div className="relative flex h-[380px] sm:h-[420px] lg:h-auto lg:col-span-7 flex-col overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-950 shadow-2xl">
+        <div className="relative flex h-[340px] sm:h-[420px] lg:h-auto lg:col-span-7 flex-col overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-950 shadow-2xl">
           <canvas ref={canvasRef} className="h-full w-full cursor-grab active:cursor-grabbing" />
 
           {/* Perspective Legend Pills */}
-          <div className="absolute top-3 left-3 right-3 flex items-center justify-between text-[11px] font-mono">
-            <div className="flex items-center gap-1.5 rounded-lg border border-neutral-800 bg-neutral-900/90 px-2.5 py-1 text-teal-300 backdrop-blur-md">
-              <Eye className="h-3 w-3" />
-              <span>Sensory Input (Victim View)</span>
+          <div className="absolute top-3 left-3 right-3 flex items-center justify-between text-[11px] font-mono gap-1.5">
+            <div className="flex items-center gap-1.5 rounded-lg border border-neutral-800 bg-neutral-900/90 px-2 sm:px-2.5 py-1 text-teal-300 backdrop-blur-md">
+              <Eye className="h-3 w-3 shrink-0" />
+              <span className="hidden xs:inline">Sensory Input (Victim View)</span>
+              <span className="xs:hidden">Victim View</span>
             </div>
-            <div className="flex items-center gap-1.5 rounded-lg border border-neutral-800 bg-neutral-900/90 px-2.5 py-1 text-amber-300 backdrop-blur-md">
-              <Crosshair className="h-3 w-3" />
-              <span>Attacker Psychology Lever</span>
+            <div className="flex items-center gap-1.5 rounded-lg border border-neutral-800 bg-neutral-900/90 px-2 sm:px-2.5 py-1 text-amber-300 backdrop-blur-md">
+              <Crosshair className="h-3 w-3 shrink-0" />
+              <span className="hidden xs:inline">Attacker Psychology Lever</span>
+              <span className="xs:hidden">Attacker Lever</span>
             </div>
           </div>
 
           {/* Interactive Step Scrubber at Bottom of 3D Canvas */}
-          <div className="absolute bottom-3 left-3 right-3 rounded-xl border border-neutral-800 bg-neutral-900/90 p-2 backdrop-blur-md">
+          <div className="absolute bottom-3 left-3 right-3 rounded-xl border border-neutral-800 bg-neutral-900/90 p-1.5 sm:p-2 backdrop-blur-md">
             <div className="flex items-center justify-between gap-1">
               {REPLAY_STEPS.map((step, idx) => (
                 <button
                   key={step.id}
                   onClick={() => setActiveStepIndex(idx)}
-                  className={`flex flex-1 flex-col items-center rounded-lg py-1.5 px-1 text-center transition ${
+                  className={`flex flex-1 flex-col items-center justify-center min-h-[44px] rounded-lg py-1 px-1 text-center transition ${
                     idx === activeStepIndex
                       ? 'bg-neutral-800 border border-neutral-700 text-neutral-100 shadow-sm'
                       : 'text-neutral-500 hover:text-neutral-300 hover:bg-neutral-800/40'

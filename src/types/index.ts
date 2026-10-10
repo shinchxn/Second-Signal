@@ -5,6 +5,33 @@ export type WeaknessTag =
   | 'curiosity'
   | 'social_pressure';
 
+export type ScenarioId =
+  | 'scenario-1-kyc'
+  | 'scenario-2-sso'
+  | 'scenario-3-upi'
+  | 'scenario-4-parcel'
+  | 'scenario-5-marketplace'
+  | 'scenario-6-gig'
+  | 'scenario-7-remote'
+  | 'scenario-8-refund';
+
+export type DeviceType = 'phone' | 'laptop' | 'dual';
+
+export interface ScenarioMeta {
+  id: ScenarioId;
+  scenarioNumber: number;
+  title: string;
+  shortTitle: string;
+  subtitle: string;
+  device: DeviceType;
+  weaknessTag: WeaknessTag;
+  difficulty: 'easy' | 'medium' | 'hard';
+  description: string;
+  learningOutcome: string;
+  redFlags: string[];
+  safeAction: string;
+}
+
 export type AppStage =
   | 'LANDING'
   | 'CHARACTER_INTRO'
@@ -15,7 +42,9 @@ export type AppStage =
   | 'PRACTICE_TRANSITION'
   | 'SCENARIO_2_LAPTOP'
   | 'SCENARIO_2_RECOGNITION'
-  | 'FINAL_SUMMARY';
+  | 'FINAL_SUMMARY'
+  | 'SCENARIOS_HUB'
+  | 'SCENARIO_RUNNER';
 
 export type ActorType = 'system' | 'user' | 'attacker_concept';
 

@@ -98,6 +98,7 @@ export const AttackReplay2D: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
   const [playbackSpeed, setPlaybackSpeed] = useState<number>(1);
   const [activeChapterIndex, setActiveChapterIndex] = useState<number>(0);
+  const [mobilePerspective, setMobilePerspective] = useState<'phone' | 'server'>('phone');
 
   const requestRef = useRef<number | null>(null);
   const lastUpdateRef = useRef<number>(performance.now());
@@ -201,66 +202,70 @@ export const AttackReplay2D: React.FC = () => {
   };
 
   return (
-    <div className="relative flex h-[calc(100vh-3.5rem)] max-h-[calc(100vh-3.5rem)] flex-col justify-between overflow-hidden px-4 py-2 select-none bg-neutral-950">
+    <div className="relative flex min-h-[calc(100vh-3.5rem)] flex-col justify-between overflow-y-auto overflow-x-hidden px-3 sm:px-4 py-2 select-none bg-neutral-950 space-y-2">
       {/* Subtle cyber background */}
       <div className="pointer-events-none absolute inset-0 bg-cyber-grid opacity-15" />
       <div className="pointer-events-none absolute top-1/2 left-1/2 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-teal-500/5 blur-3xl" />
 
       {/* 1. TOP VIDEO PLAYER HEADER */}
-      <div className="relative z-20 flex w-full items-center justify-between rounded-xl border border-neutral-800 bg-neutral-900/90 px-3 py-1.5 backdrop-blur-md text-xs shrink-0 shadow-lg">
+      <div className="relative z-20 flex w-full flex-col sm:flex-row items-stretch sm:items-center justify-between rounded-xl border border-neutral-800 bg-neutral-900/90 px-3 py-2 backdrop-blur-md text-xs shrink-0 shadow-lg gap-2">
         {/* Title & Live Badge */}
-        <div className="flex items-center gap-2.5">
-          <div className="flex items-center gap-1.5 rounded-full border border-red-500/40 bg-red-950/50 px-2 py-0.5 font-mono text-[10px] text-red-400 font-bold">
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 rounded-full border border-red-500/40 bg-red-950/50 px-2 py-0.5 font-mono text-[10px] text-red-400 font-bold shrink-0">
             <span className={`h-2 w-2 rounded-full bg-red-500 ${isPlaying ? 'animate-pulse' : ''}`} />
-            <span>ATTACK REPLAY • ANIMATED VISUALIZATION</span>
+            <span className="hidden xs:inline">ATTACK REPLAY • ANIMATION</span>
+            <span className="xs:hidden">REPLAY</span>
           </div>
           <span className="hidden sm:inline text-neutral-600">|</span>
-          <span className="hidden sm:inline text-[11px] text-neutral-300 font-medium">
-            Watch how clicking the link secretly diverted funds without {firstName} noticing
+          <span className="text-[11px] text-neutral-300 font-medium truncate">
+            Live Trajectory: How funds were diverted
           </span>
         </div>
 
         {/* Video Scrubber & Play Controls */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center justify-between sm:justify-end gap-2">
           {/* Running Clock */}
           <div className="font-mono text-[11px] text-neutral-400 bg-neutral-950 px-2 py-0.5 rounded border border-neutral-800">
             <span className="text-teal-400 font-bold">{formatTime(currentTime)}</span>
             <span className="text-neutral-600"> / 00:16.0</span>
           </div>
 
-          {/* Play/Pause */}
-          <button
-            onClick={handleTogglePlay}
-            className="flex items-center gap-1 rounded-lg border border-teal-500/40 bg-teal-950/40 px-2.5 py-1 text-xs font-mono font-bold text-teal-300 hover:bg-teal-900/50 transition active:scale-95"
-          >
-            {isPlaying ? <Pause className="h-3 w-3 text-amber-400" /> : <Play className="h-3 w-3 text-teal-400" />}
-            <span>{isPlaying ? 'Pause' : currentTime >= TOTAL_DURATION ? 'Replay' : 'Play'}</span>
-          </button>
+          <div className="flex items-center gap-1.5">
+            {/* Play/Pause */}
+            <button
+              onClick={handleTogglePlay}
+              className="flex min-h-[36px] items-center gap-1 rounded-lg border border-teal-500/40 bg-teal-950/40 px-2.5 py-1 text-xs font-mono font-bold text-teal-300 hover:bg-teal-900/50 transition active:scale-95"
+            >
+              {isPlaying ? <Pause className="h-3 w-3 text-amber-400" /> : <Play className="h-3 w-3 text-teal-400" />}
+              <span>{isPlaying ? 'Pause' : currentTime >= TOTAL_DURATION ? 'Replay' : 'Play'}</span>
+            </button>
 
-          {/* Restart */}
-          <button
-            onClick={handleRestart}
-            className="p-1 rounded-lg border border-neutral-800 bg-neutral-800 text-neutral-400 hover:text-neutral-200 transition"
-            title="Restart Video"
-          >
-            <RotateCcw className="h-3.5 w-3.5" />
-          </button>
+            {/* Restart */}
+            <button
+              onClick={handleRestart}
+              className="min-h-[36px] min-w-[36px] flex items-center justify-center p-1 rounded-lg border border-neutral-800 bg-neutral-800 text-neutral-400 hover:text-neutral-200 transition"
+              title="Restart Video"
+              aria-label="Restart Video"
+            >
+              <RotateCcw className="h-3.5 w-3.5" />
+            </button>
 
-          {/* Speed Toggle */}
-          <button
-            onClick={() => setPlaybackSpeed(playbackSpeed === 1 ? 1.5 : 1)}
-            className="rounded border border-neutral-800 bg-neutral-800 px-1.5 py-0.5 text-[10px] font-mono text-neutral-300 hover:bg-neutral-700"
-            title="Playback Speed"
-          >
-            {playbackSpeed}x
-          </button>
+            {/* Speed Toggle */}
+            <button
+              onClick={() => setPlaybackSpeed(playbackSpeed === 1 ? 1.5 : 1)}
+              className="min-h-[36px] rounded border border-neutral-800 bg-neutral-800 px-2 py-0.5 text-[10px] font-mono text-neutral-300 hover:bg-neutral-700"
+              title="Playback Speed"
+            >
+              {playbackSpeed}x
+            </button>
+          </div>
         </div>
       </div>
 
       {/* 2. TIMELINE CHAPTER STRIP */}
-      <div className="relative z-20 w-full shrink-0 my-1">
-        {/* 4 Chapter Tabs */}
-        <div className="grid grid-cols-4 gap-2">
+      <div className="relative z-20 w-full shrink-0">
+        {/* 4 Chapter Tabs: 2x2 grid on mobile, 4-col on desktop */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-2">
           {CHAPTERS.map((ch, idx) => {
             const isActive = activeChapterIndex === idx;
             const isCompleted = activeChapterIndex > idx;
@@ -268,7 +273,7 @@ export const AttackReplay2D: React.FC = () => {
               <button
                 key={ch.id}
                 onClick={() => handleSeekToChapter(idx)}
-                className={`flex items-center justify-between rounded-lg border px-2.5 py-1 text-left transition ${
+                className={`flex items-center justify-between min-h-[44px] rounded-lg border px-2 sm:px-2.5 py-1 text-left transition ${
                   isActive
                     ? 'border-teal-500 bg-teal-950/40 text-teal-200 ring-1 ring-teal-500/50'
                     : isCompleted
@@ -291,12 +296,40 @@ export const AttackReplay2D: React.FC = () => {
         </div>
       </div>
 
+      {/* Mobile Perspective Switcher Tab (< lg) */}
+      <div className="flex lg:hidden items-center justify-center gap-2 w-full max-w-xs mx-auto shrink-0">
+        <button
+          type="button"
+          onClick={() => setMobilePerspective('phone')}
+          className={`flex-1 min-h-[38px] flex items-center justify-center gap-1.5 rounded-lg border px-3 py-1 text-xs font-semibold transition ${
+            mobilePerspective === 'phone'
+              ? 'bg-teal-600 border-teal-400 text-white shadow-md'
+              : 'bg-neutral-900 border-neutral-800 text-neutral-400 hover:text-white'
+          }`}
+        >
+          <Smartphone className="h-3.5 w-3.5" />
+          <span>Victim Phone</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setMobilePerspective('server')}
+          className={`flex-1 min-h-[38px] flex items-center justify-center gap-1.5 rounded-lg border px-3 py-1 text-xs font-semibold transition ${
+            mobilePerspective === 'server'
+              ? 'bg-red-600 border-red-400 text-white shadow-md'
+              : 'bg-neutral-900 border-neutral-800 text-neutral-400 hover:text-white'
+          }`}
+        >
+          <Server className="h-3.5 w-3.5" />
+          <span>Rogue Server</span>
+        </button>
+      </div>
+
       {/* 3. UNIFIED VISUAL STAGE: PHONE + LIVE BACKEND TRANSMISSION DIAGRAM */}
-      <div className="relative z-10 flex flex-1 min-h-0 w-full items-center justify-center rounded-2xl border border-neutral-800 bg-neutral-900/80 p-3 backdrop-blur-md shadow-2xl">
-        <div className="relative flex h-full w-full max-w-5xl items-center justify-between gap-4">
+      <div className="relative z-10 flex flex-1 min-h-0 w-full items-center justify-center rounded-2xl border border-neutral-800 bg-neutral-900/80 p-3 sm:p-4 backdrop-blur-md shadow-2xl">
+        <div className="relative flex flex-col lg:flex-row h-full w-full max-w-5xl items-center justify-between gap-4">
           
           {/* A. LEFT HERO: PHONE DISPLAY (WHAT ARJUN EXPERIENCED) */}
-          <div className="relative flex flex-col items-center justify-center shrink-0">
+          <div className={`${mobilePerspective === 'phone' ? 'flex' : 'hidden lg:flex'} relative flex-col items-center justify-center shrink-0`}>
             {/* Stage Label above phone */}
             <div className="mb-1 flex items-center gap-1.5 text-[11px] font-bold text-teal-400">
               <Smartphone className="h-3.5 w-3.5" />
@@ -557,7 +590,7 @@ export const AttackReplay2D: React.FC = () => {
           </div>
 
           {/* C. RIGHT HERO: WHAT REALLY HAPPENED BEHIND THE SCENES */}
-          <div className="relative flex flex-col items-center justify-center shrink-0 space-y-3">
+          <div className={`${mobilePerspective === 'server' ? 'flex' : 'hidden lg:flex'} relative flex-col items-center justify-center shrink-0 space-y-3`}>
             {/* Real Bank (Unreached) vs Rogue Server (Compromised) */}
             
             {/* 1. REAL BANK (Safely Bypassed by the scammer) */}
@@ -641,17 +674,17 @@ export const AttackReplay2D: React.FC = () => {
       </div>
 
       {/* 4. BOTTOM ACTION & TAKEAWAY BAR */}
-      <div className="relative z-20 flex w-full items-center justify-between rounded-xl border border-neutral-800 bg-neutral-900/90 px-3.5 py-2 backdrop-blur-md text-xs shrink-0 mt-1 shadow-lg">
-        <div className="flex items-center gap-2">
-          <ShieldAlert className="h-4 w-4 text-amber-400 shrink-0" />
-          <span className="text-[12px] text-neutral-200">
+      <div className="relative z-20 flex w-full flex-col sm:flex-row items-stretch sm:items-center justify-between rounded-xl border border-neutral-800 bg-neutral-900/90 px-3.5 py-2.5 backdrop-blur-md text-xs shrink-0 mt-1 shadow-lg gap-2.5">
+        <div className="flex items-start sm:items-center gap-2">
+          <ShieldAlert className="h-4 w-4 text-amber-400 shrink-0 mt-0.5 sm:mt-0" />
+          <span className="text-[11.5px] sm:text-[12px] text-neutral-200 leading-snug">
             <strong>Simple Lesson:</strong> Real banks never send urgency countdown links in SMS. If an SMS creates an artificial rush, the rush itself is the scam alarm.
           </span>
         </div>
 
         <button
           onClick={handleProceedToDiagnosis}
-          className="inline-flex items-center gap-2 rounded-xl bg-teal-500 px-4 py-1.5 text-xs font-bold text-neutral-950 transition hover:bg-teal-400 active:scale-95 shadow-md shadow-teal-500/20 shrink-0"
+          className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl bg-teal-500 px-5 py-2.5 text-xs font-bold text-neutral-950 transition hover:bg-teal-400 active:scale-95 shadow-md shadow-teal-500/20 shrink-0"
         >
           <span>Behavioral Diagnosis</span>
           <ArrowRight className="h-3.5 w-3.5" />
